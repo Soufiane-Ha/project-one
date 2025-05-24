@@ -1,0 +1,94 @@
+<style>
+    /* الوضع الافتراضي (Light Mode) */
+body {
+    background-color: #ffffff;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* وضع الليل (Dark Mode) */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* زر التبديل */
+.toggle-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dark-mode .toggle-button {
+    background: #fff;
+    color: #000;
+}
+
+    #logo-container {
+        position: fixed;
+        top: 20%;
+        left: 30%;
+        transform: translate(-50%, -50%) scale(1);
+        transition: transform 0.4s ease-out, top 0.4s ease-out, left 0.4s ease-out, opacity 0.4s ease-out;
+        z-index: 1000;
+    }
+    
+    #logo {
+        width: 120px;
+        transition: width 0.4s ease-out, opacity 0.4s ease-out;
+    }
+    </style>
+    <button id="toggle-dark-mode" class="toggle-button">🌙 وضع الليل</button>
+
+    <div id="logo-container">
+        <img src="image/cou.jpg" id="logo" alt="Club Logo">
+    </div>
+    <script>
+    window.addEventListener("scroll", function () {
+        let logo = document.getElementById("logo-container");
+        let scrollPosition = window.scrollY;
+        let maxScroll = 300; // جعل القيمة أكبر لتجنب القفزة المفاجئة
+    
+        let scrollFactor = Math.min(scrollPosition / maxScroll, 1);
+    
+        let scale = 1 - scrollFactor * 0.3; // تقليل نسبة الانكماش لمنع القفزة
+        let opacity = 1 - scrollFactor * 0.4; // جعل الشفافية تدريجية
+        let newTop = 20 - scrollFactor * 10 + "%"; // تقليل فرق الحركة لجعلها طبيعية
+        let newLeft = 30 - scrollFactor * 10 + "%"; // تعديل المسار ليبقى متناسقًا
+    
+        logo.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        logo.style.top = newTop;
+        logo.style.left = newLeft;
+        logo.style.opacity = opacity;
+    });
+    // جلب العناصر
+const toggleButton = document.getElementById("toggle-dark-mode");
+const body = document.body;
+
+// التحقق مما إذا كان الوضع الليلي مفعلًا مسبقًا
+if (localStorage.getItem("darkMode") === "enabled") {
+    body.classList.add("dark-mode");
+    toggleButton.textContent = "☀️ وضع النهار";
+}
+
+// عند النقر على الزر
+toggleButton.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+        localStorage.setItem("darkMode", "enabled");
+        toggleButton.textContent = "☀️ وضع النهار";
+    } else {
+        localStorage.setItem("darkMode", "disabled");
+        toggleButton.textContent = "🌙 وضع الليل";
+    }
+});
+
+    </script>
+    
